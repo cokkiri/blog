@@ -1,7 +1,7 @@
 {
-  "base_url": "",
-  "site_title": "Next.js Netlify Blog",
-  "site_description": "Next.js blog template for Netlify",
+  "base_url": "https://angry-golick-8fc884.netlify.app/",
+  "site_title": "데이터-쟁이들",
+  "site_description": "데이터쟁이들의 기술 블로그입니다. 주로 데이터를 다룹니다.",
   "site_keywords": [
     {
       "keyword": "Next.js"
@@ -15,5 +15,5 @@
   ],
   "posts_per_page": 5,
   "twitter_account": "@my-account",
-  "github_account": "wutali"
+  "github_account": "cokkiri"
 }
