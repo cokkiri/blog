@@ -1,7 +1,7 @@
 {
   "base_url": "https://angry-golick-8fc884.netlify.app",
-  "site_title": "Next.js Netlify Blog",
-  "site_description": "Next.js blog template for Netlify",
+  "site_title": "데이터-쟁이들",
+  "site_description": "데이터쟁이들의 기술 블로그",
   "site_keywords": [
     "데이터",
     "딥러닝",
