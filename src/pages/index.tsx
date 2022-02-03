@@ -13,10 +13,10 @@ export default function Index() {
       <div className="container">
         <div>
           <h1>
-            Hi, We're Next.js & Netlify<span className="fancy">.</span>
+            데이터-쟁이들<span className="fancy">.</span>
           </h1>
-          <span className="handle">@nextjs-netlify-blog</span>
-          <h2>A blog template with Next.js and Netlify.</h2>
+          <span className="handle">@cokkiri</span>
+          <h2>데이터-장이가 될 때까지 꾸준히 연재하겠습니다.</h2>
           <SocialList />
         </div>
       </div>
@@ -40,7 +40,15 @@ export default function Index() {
         }
         .fancy {
           color: #15847d;
+          animation: blinker 2.5s linear infinite;
         }
+
+        @keyframes blinker {
+          50% {
+            opacity: 0;
+          }
+        }
+
         .handle {
           display: inline-block;
           margin-top: 0.275em;
