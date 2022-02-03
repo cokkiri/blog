@@ -1,6 +1,16 @@
 authors:
-  - slug: wutali
-    name: Takahiro Fujiwara
-    introduction:
-      Co-founder and CTO at Fuller, Inc. / Software & Data Engineer /
-      Python / Golang / React
+  - slug: dohyung
+    name: Dohyung Park
+    introduction: Data Engineer at Netmarble, corp.
+  - slug: hobin
+    name: Hobin Jeong
+    introduction: DL Engineer
+  - slug: seanie
+    name: Seanie Lee
+    introduction: Doctoral student at KAIST
+  - slug: jonghwan
+    name: Jonghwan Jeong
+    introduction: Research Scientist at Medical AI
+  - slug: dongsu
+    name: Dongsu Kang
+    introduction: Data Analyst at Wadiz, inc
