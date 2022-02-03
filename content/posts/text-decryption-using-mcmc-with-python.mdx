@@ -1,0 +1,197 @@
+---
+slug: text-decryption-using-mcmc-with-python
+title: Text Decryption Using MCMC (with Python)
+date: 2020-03-26
+author: dohyungp
+tags:
+  - python
+---
+안녕하세요, 박도형입니다.
+틈틈히 R-Blogger에서 메일을 통해 받아보는 편인데, 재밌게 읽었던 포스트인 <a href="https://www.r-bloggers.com/text-decryption-using-mcmc/">Text Decryption Using MCMC</a>를 R 버전에서 Python으로 변경하는 작업을 해봤습니다.
+
+필요한 패키지는 다음과 같습니다.
+
+```py
+import random
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+이 글에서는 대문자 알파벳들만 사용할 것이므로, LETTERS라는 알파벳 대문자 리스트를 만들어줍니다.
+
+```py
+LETTERS = [chr(c) for c in range(ord('A'), ord('Z') + 1)]
+```
+
+이 후 알파벳 간의 전이 빈도를 담고 있는 Trasition Matrix를 초기화합니다. 여기서 Trainsition Matrix란, 특정 알파벳에서 다른 알파벳으로 갈 빈도를 계산한 것을 이야기합니다(e.g QUEEN이라는 단어가 들어갔을 때, Q $\rightarrow$ U에 해당하는 빈도값을 업데이트). 공식적으로는 <a href="https://en.wikipedia.org/wiki/Stochastic_matrix">Stochastic Matrix</a>라고 합니다.
+
+```py
+trans_mat = {
+    c1: {c2: 0 for c2 in LETTERS + ['']}
+    for c1 in LETTERS + ['']
+}
+```
+
+준비가 끝났습니다. 이제 실제 데이터를 가지고, 위의 `trans_mat`를 업데이트해주기만 하면 됩니다. 저는 기존 예제에 추가적으로 <a href="https://github.com/dwyl/english-words">영어 단어 목록</a>과 <a href="http://www.gutenberg.org/">구텐베르크 프로젝트(Project Gutenberg)</a>에서 이상한 나라의 앨리스와 오만과 편견을 Transition Matrix 만드는데 사용했습니다.
+
+```py
+# English Word List
+with open('./words.txt', 'r') as f:
+    reference = f.readlines()
+
+# War and Peace    
+with open('./warandpeace.txt') as f:
+    reference += f.readlines()
+
+# Alice Wonderland    
+with open('./alicewonderland.txt') as f:
+    reference += f.readlines()
+
+# Pride and Prejudice
+with open('./prideprejudice.txt') as f:
+    reference += f.readlines()
+
+reference = [ln.upper() for ln in reference]
+```
+
+이제 Matrix를 업데이트 해봅시다!
+
+```py
+l = ''
+
+for line in reference:
+    for c in line:
+        if c in LETTERS:
+            trans_mat[c][l] += 1
+            l = c
+        else:
+            if l != '':
+                trans_mat[''][l] += 1
+            l = ''
+```
+
+매우 간단하죠? 골자는 마지막에 출현했던 글자를 의미하는 `l`이라는 변수로부터 현재 글자를 의미하는 `c`로 가는 Transition Matrix를 만드는 것입니다. 다만 이 글에서는 대문자 알파벳만 사용하기로 했으므로 기타 단어는 `''`로 처리해주는 작업이 덧붙여진 수준이죠.
+
+이제 연산을 좀 더 쉽게 하기 위해 `DataFrame`으로 변환해줍니다(처음부터 `DataFrame`을 사용하지 않은 이유는 빈번하게 element를 업데이트하는 작업은 Pandas에 적합하지 않기 때문입니다🙂). 또한 추가로 각 빈도값으로 구성된 Matrix를 확률값 형태로 변경해줬습니다.
+
+```py
+trans_mat = pd.DataFrame(trans_mat)
+trans_prob_mat = (trans_mat + 1).apply(lambda row: row / row.sum(), axis=1)
+```
+
+자, 이제 heatmap을 통해 Matrix가 상식 수준에서 잘 업데이트가 되었는지 확인해보죠.
+
+```py
+plt.figure(figsize=(10, 10))
+sns.heatmap(trans_prob_mat, cmap='Greys')
+```
+
+![](/images/heatmap.png)
+
+앞서 사용했던 예제인 $Q\rightarrow U$로 가는 확률이 아주 또렷하죠? 정상적으로 확인했습니다. 이제 실제 Decrpytion해볼 차례입니다. 여기서도 원글과 마찬가지로,
+
+```
+[A, B, C, ..., X]
+```
+
+위와 같은 알파벳 배열을 무작위로 섞어 아래와 같이 변형하고 이를 통해 `평문(Plain Text)`를 암호화시킵니다.
+
+```
+[Z, K, M, ..., A]
+```
+
+평문 또한 원글과 동일하게 <a href="https://math.uchicago.edu/~shmuel/Network-course-readings/MCMCRev.pdf">The Markov Chain Monte Carlo Revolution</a>글에서 사용된 
+
+```
+ENTER HAMLET HAM TO BE OR NOT TO BE THAT IS THE QUESTION WHETHER TIS NOBLER IN THE MIND TO SUFFER 
+THE SLINGS AND ARROWS OF OUTRAGEOUS FORTUNE OR TO TAKE ARMS AGAINST A SEA OF TROUBLES AND BY OPPOSING END
+```
+
+를 사용했습니다.
+
+```py
+def decode(mapping, coded):
+    coded = coded.upper()
+    return ''.join([LETTERS[mapping.index(c)] if c in LETTERS else c for c in coded])
+
+def calculate_loglikelihood(decoded):
+    l = ''
+    log_prob = 0
+    mat = trans_prob_mat.loc
+    
+    for c in decoded:
+        if c in LETTERS:
+            # if you need to prevent divide by zero exception, 
+            # consider to use sys.float_info.epsilon or np.finfo(np.float64).eps
+            log_prob += np.log(mat[l, c])
+            l = c
+        else:
+            log_prob += np.log(mat[l, ''])
+            l = ''
+            
+    if l != '':
+        log_prob += np.log(mat[l, ''])
+
+    return log_prob
+```
+
+간략하게 코드를 설명하자면 앞서 만든 Transition Probabilty Matrix에서 글자에서 글자의 전이시점의 확률들을 가져와 그 값에 log를 씌우고 합산, 전체 문장의 log liklihood의 합을 반환하도록 합니다.
+
+(주석에도 남겨뒀지만, log를 취할 때는 0이면 -inf가 리턴되므로 필요 시 `sys.float_info.epsilon`이나, `np.finfo(dtype).eps`로 0이 아니도록 만들어주세요. )
+
+이제 실제 테스트해봅시다.
+
+```py
+plain_text = 'ENTER HAMLET HAM TO BE OR NOT TO BE THAT IS THE QUESTION WHETHER TIS NOBLER IN THE MIND TO SUFFER'\
+'THE SLINGS AND ARROWS OF OUTRAGEOUS FORTUNE OR TO TAKE ARMS AGAINST A SEA OF TROUBLES AND BY OPPOSING END'
+
+key = random.sample(LETTERS, len(LETTERS))
+coded = decode(key, plain_text)
+
+iters = 5000
+
+mapping = random.sample(LETTERS, len(LETTERS))
+max_decode = cur_decode = decode(mapping, coded)
+max_loglike = cur_loglike = calculate_loglikelihood(cur_decode)
+
+for i in range(iters):
+    p1, p2 = random.choices(range(len(mapping)), k=2)    
+    prop_mapping = mapping.copy()
+    prop_mapping[p1] = mapping[p2]
+    prop_mapping[p2] = mapping[p1]
+
+    prop_decode = decode(prop_mapping, coded)
+    prop_loglike = calculate_loglikelihood(prop_decode)
+    
+    if random.random() < np.exp(prop_loglike - cur_loglike):
+        mapping = prop_mapping
+        cur_decode = prop_decode
+        cur_loglike = prop_loglike
+        
+        if cur_loglike > max_loglike:
+            max_loglike = cur_loglike
+            max_decode = cur_decode
+            
+            
+    print(cur_decode, end='\r', flush=True)
+```
+
+위의 코드는 약 5천번을 돌면서 크게 두가지 작업을 합니다.
+
+1. 초기화된 mapping이라는 변수에서 무작위로 2개의 알파벳을 골라, 위치를 바꾸고 그랬을 때 log likelihood가 얼마나 되는지 계산하는 작업
+2. 그 값(`prop_loglike`)과 특정임계를 넘긴 log likelihood(`cur_loglike`)값의 차가 특정임계점(`random.random`)을 넘겼는지 비교하고 `cur_loglike`값을 업데이트하는 작업.
+
+이 작업을 거치면 다음과 유사한 결과물을 획득할 수 있습니다!
+
+```
+ENTER HADLET HAD TO PE OR NOT TO PE THAT IS THE KUESTION WHETHER TIS NOPLER IN THE DING TO SUFFERTHE SLINCS ANG ARROWS OF OUTRACEOUS FORTUNE OR TO TAVE ARDS ACAINST A SEA OF TROUPLES ANG PY OMMOSINC ENG
+```
+
+**번외**
+
+* Python 옮겨온 코드는 어떤 이유에서인지 R에서 돌릴 때보다 Performance가 떨어집니다. 예상키로 <a href="https://docs.python.org/ko/3.8/tutorial/floatingpoint.html">Precision 이슈</a>가 아닐까 싶습니다.
+* Optimal iteration이 있을까 50,000번 반복 후 그래프를 그려봤는데, 초기 2,000 ~ 5,000번 iteration에서 log likelihood가 급격하게 올라간 후 거의 비슷한 형태를 유지합니다(아래 그래프 참고, x축 iteration y축 log liklihood)
+
+![](/images/loglikelihood.png)
