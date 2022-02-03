@@ -1,8 +1,10 @@
-import Link from "next/link";
 import { GetStaticProps } from "next";
 import authorsMeta from "../../../meta/authors.yml";
 import Layout from "../../components/Layout";
 import { AuthorContent } from "../../lib/authors";
+import BasicMeta from "../../components/meta/BasicMeta";
+import OpenGraphMeta from "../../components/meta/OpenGraphMeta";
+import TwitterCardMeta from "../../components/meta/TwitterCardMeta";
 import GitHub from "../../assets/github-alt.svg";
 
 type AuthorsProps = {
@@ -10,8 +12,12 @@ type AuthorsProps = {
 };
 
 export default function Authors({ authors }: AuthorsProps) {
+  const url = `/authors`;
   return (
     <Layout>
+      <BasicMeta url={url} title="코끼리 기술 블로그" />
+      <OpenGraphMeta url={url} title="코끼리 기술 블로그" />
+      <TwitterCardMeta url={url} title="코끼리 기술 블로그" />
       <div className="container">
         <div className="authors">
           <ul className="author-list">
