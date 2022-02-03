@@ -1,16 +1,16 @@
 authors:
-  - slug: dohyung
-    name: Dohyung Park
+  - slug: dohyungp
+    name: 박도형
     introduction: Data Engineer at Netmarble, corp.
-  - slug: hobin
-    name: Hobin Jeong
-    introduction: DL Engineer
-  - slug: seanie
-    name: Seanie Lee
+  - slug: hobin-jeong
+    name: 정호빈
+    introduction: DL Engineer at Chips&Media
+  - slug: seanie12
+    name: 이신의
     introduction: Doctoral student at KAIST
-  - slug: jonghwan
-    name: Jonghwan Jeong
+  - slug: jjongjjong
+    name: 장종환
     introduction: Research Scientist at Medical AI
-  - slug: dongsu
-    name: Dongsu Kang
+  - slug: dongsukang
+    name: 강동수
     introduction: Data Analyst at Wadiz, inc
