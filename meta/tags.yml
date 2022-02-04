@@ -5,3 +5,5 @@ tags:
     name: Data science
   - name: Mathematics
     slug: mathematics
+  - name: Category Theory
+    slug: category-theory
