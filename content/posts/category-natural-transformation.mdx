@@ -28,7 +28,7 @@ tags:
 
 Category는 object와 morphism으로 이루어져 있다. Category는 정의상 각 object마다 identity morphism을 가지므로, 사실상 morphism만으로 이루어져 있다고 봐도 큰 무리는 아닌 것 같다. 이러한 측면에서 functor란 결국 두 카테고리의 구조적 동질성(composition을 해서 보내나 보내고 composition을 하나 같음)을 얘기하는 것이다. 그렇다면 functor 사이의 morphism, 즉 `natural transformation`은 어떤 정의를 이루어야 할까? 하나의 morphism을 두 개의 functor가 보냈을 때, 이 둘을 서로 잘 어울리도록 하는 무언가면 좋겠다. 이러한 관점에서 정의를 보면 그리 억지스럽지 않다.
 
-$$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 $$F$$와 $$G$$ 사이의 `morphism`(or `natural transformation`) $$\alpha:F\longrightarrow G$$는 아래의 조건을 만족시키는 $$\mathcal{D}$$의 morphism collection $$\{\alpha_X:::FX\longrightarrow GX\}_\{X\in\mathcal{C}\}$$이다.:
+$$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 $$F$$와 $$G$$ 사이의 `morphism`(or `natural transformation`) $$\alpha:F\longrightarrow G$$는 아래의 조건을 만족시키는 $$\mathcal{D}$$의 morphism collection $$\{\alpha_X\::\:FX\longrightarrow GX\}_{X\in\mathcal{C}}$$이다.:
 
    임의의 morphism $$f:X\longrightarrow Y$$에 대하여 아래의 diagram이 commutative하다.
 
@@ -50,7 +50,9 @@ $$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 
        c: id_{k\text{-}\mathtt{VECT}}\longrightarrow(-)^{\vee\vee}
     $$
 
-    이 morphism은 다음과 같은 morphism들로 구성이 되어있다.: $$c_V:V\longrightarrow V^{\vee\vee}$$ for each $$V\in k\text{-}\mathtt{VECT}$$.
+    이 morphism은 다음과 같은 morphism들로 구성이 되어있다.: 
+
+$$c_V:V\longrightarrow V^{\vee\vee}$$ for each $$V\in k\text{-}\mathtt{VECT}$$.
 
     각 $$V\in k\text{-}\mathtt{VECT},:v\in V$$마다 $$c_V(v):V^{\vee}\longrightarrow k$$는 $$c_V(v):=ev_v$$ (evaluation map)으로 정의되며, $$ev_v(f):=f(v)$$로 정의된다.
 
@@ -81,7 +83,7 @@ $$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 
 
    여기서 $$M_n(A)$$는 $$A$$의 원소를 entry로 갖는 $$n\times n$$ square matrix의 모임이다. 그러면 forgetful functor $$U:\mathtt{CRINGS}\longrightarrow\mathtt{RINGS}$$에 대하여 $$\det:M_n\longrightarrow U$$는 natural transformation이 된다.
 
-   $$\det$$는 선형대수에서 했듯 주어진 commutative ring $$A$$에 대해 matrix $$K=(k*{ij})\in M_n(A)$$가 주어지면 $$\det_A(K):=\sum*{\sigma\in S*n}\text{sgn}(\sigma)\prod*{i=1}^n k_{\sigma(i)i}$$로 정의되는 함수다. 이제 다음의 diagram이 commutative인지 확인해보도록 하겠다.:
+   $$\det$$는 선형대수에서 했듯 주어진 commutative ring $$A$$에 대해 matrix $$K=(k*{ij})\in M_n(A)$$가 주어지면 $$\det_A(K):=\sum_{\sigma\in S_n}\text{sgn}(\sigma)\prod_{i=1}^n k_{\sigma(i)i}$$로 정의되는 함수다. 이제 다음의 diagram이 commutative인지 확인해보도록 하겠다.:
 
    ![](/images/2021-05-28-math-intro-to-category-3-img3.png "img 3")
 
@@ -89,9 +91,9 @@ $$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 
 
    $$
       \begin{aligned}
-        f(\det*A((k*{ij}))) &= f(\sum*{\sigma\in S_n}\text{sgn}(\sigma)\prod*{i=1}^n k*{\sigma(i)i}) \\
-                            &= \sum*{\sigma\in S*n}\text{sgn}(\sigma)\prod*{i=1}^n f(k*{\sigma(i)i}) \\
-                            &= \det_B((f(k*{ij})))
+        f(\det_A((k_{ij}))) &= f(\sum_{\sigma\in S_n}\text{sgn}(\sigma)\prod_{i=1}^n k_{\sigma(i)i}) \\
+                            &= \sum_{\sigma\in S_n}\text{sgn}(\sigma)\prod_{i=1}^n f(k_{\sigma(i)i}) \\
+                            &= \det_B((f(k_{ij})))
       \end{aligned}
    $$
 
