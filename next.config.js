@@ -1,5 +1,6 @@
-module.exports = ({
+module.exports = {
   pageExtensions: ["tsx"],
+  swcMinify: true,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push(
       ...[
@@ -16,4 +17,4 @@ module.exports = ({
     );
     return config;
   },
-});
+};

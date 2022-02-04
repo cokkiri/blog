@@ -13,6 +13,12 @@ export default function Layout({ children }: Props) {
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="apple-touch-icon" href="/icon.png" />
         <meta name="theme-color" content="#fff" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+          integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc"
+          crossOrigin="anonymous"
+        />
       </Head>
       <nav>
         <Navigation />
