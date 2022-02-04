@@ -26,7 +26,7 @@ import seaborn as sns
 LETTERS = [chr(c) for c in range(ord('A'), ord('Z') + 1)]
 ```
 
-이 후 알파벳 간의 전이 빈도를 담고 있는 Trasition Matrix를 초기화합니다. 여기서 Trainsition Matrix란, 특정 알파벳에서 다른 알파벳으로 갈 빈도를 계산한 것을 이야기합니다(e.g QUEEN이라는 단어가 들어갔을 때, Q $\rightarrow$ U에 해당하는 빈도값을 업데이트). 공식적으로는 <a href="https://en.wikipedia.org/wiki/Stochastic_matrix">Stochastic Matrix</a>라고 합니다.
+이 후 알파벳 간의 전이 빈도를 담고 있는 Transition Matrix를 초기화합니다. 여기서 Transition Matrix란, 특정 알파벳에서 다른 알파벳으로 갈 빈도를 계산한 것을 이야기합니다(e.g QUEEN이라는 단어가 들어갔을 때, Q $\rightarrow$ U에 해당하는 빈도값을 업데이트). 공식적으로는 <a href="https://en.wikipedia.org/wiki/Stochastic_matrix">Stochastic Matrix</a>라고 합니다.
 
 ```py
 trans_mat = {
