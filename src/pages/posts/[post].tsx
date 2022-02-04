@@ -13,6 +13,8 @@ import YouTube from "react-youtube";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
 
 export type Props = {
   title: string;
@@ -75,7 +77,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     scope: data,
     mdxOptions: {
       remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex],
+      rehypePlugins: [rehypeKatex, rehypeSlug, rehypeAutolinkHeadings],
     },
   });
 
