@@ -1,0 +1,127 @@
+---
+slug: category-category-isomorphism
+title: "[Category] Category, Isomorphism"
+date: 2022-02-04
+author: hobin-jeong
+tags:
+  - mathematics
+  - category-theory
+---
+* 목차
+
+  * [시작하면서...](#시작하면서...)
+  * [Category 정의](#category-정의)
+  * [Isomorphism](#isomorphism)
+  * [Examples 1](#examples-1)
+  * [Examples 2](#examples-2)
+  * [마무리](#마무리)
+
+
+
+## 시작하면서...
+
+- - -
+
+`범주론`이라고도 불리우는 category theory는 현대 수학에서는 없어서는 안 될 강력한 추상화 도구이다. 엔지니어링 사이드에서는 함수형 프로그래밍 등에서도 많이 응용되는 듯 하다. ([Categories, What's the Point?](https://jeremykun.com/2013/04/16/categories-whats-the-point/)) 가까운 미래에는 여러 프로그래밍 언어를 다뤄보면서 category theory를 접목시킬 기회가 생길지는 모르겠지만, 우선은 수학에서 요긴하게 갖다쓸 수 있도록 study를 진행하고자 한다.
+
+## Category 정의
+
+- - -
+
+`Category` $$\mathcal{C}$$는 `object`와 `morphism`으로 구성이 되어 있는 대상이다.   
+
+좀 더 구체적으로, object들의 집합 $$Ob(\mathcal{C})$$와 각 object $$X,Y\in Ob(\mathcal{C})$$(또는 $$X\in\mathcal{C}$$라고도 쓴다)의 ordered pair $$(X,Y)$$마다 morphism의 집합 $$Hom_{\mathcal{C}}(X,Y)$$이 있으면서 아래의 조건을 만족시킨다. :
+
+각 $$X,Y,Z\in Ob(\mathcal{C})$$에 대하여, `composition`
+
+$$
+\begin{aligned}
+  \circ: Hom*{\mathcal{C}}(Y,Z)\times Hom*{\mathcal{C}}(X,Y)\longrightarrow Hom_{\mathcal{C}}(X,Z)
+\end{aligned}
+$$
+
+가 존재하여 associative하고, 각 $$X\in\mathcal{C}$$마다 identity morphism $$id*X\in Hom*{\mathcal{C}}(X,X)$$가 존재한다.  
+
+여기서 주의할 점은 각 object가 집합이라고 말한 적이 없고, 각 morphism이 함수라고 말한 적이 없다는 것이다. 따라서 identity morphism도 정의역의 원소를 자기 자신으로 보내는 함수로 생각해서는 안된다. 여기서의 identity는 정말 항등원으로써의 identity를 뜻한다.   
+
+만약 object가 집합이고 morphism이 함수라면 우리는 이러한 category를 `concrete category`라고 부른다.
+
+## Isomorphism
+
+- - -
+
+Category $$\mathcal{C}$$가 하나 주어졌다고 하자. 이 때 object $$X,Y\in\mathcal{C}$$에 대해 `isomorphism`은 다음의 조건을 만족하는 morphism $$f:X\rightarrow Y$$를 뜻한다.:   
+
+적당한 morphism $$g:Y\longrightarrow X$$가 있어서   
+
+$$g\circ f=id_X,:f\circ g=id_Y$$
+
+를 만족한다.   
+
+이 때 $$X$$와 $$Y$$는 서로 `isomorphic`하다고 하며, $$X\cong Y$$ 혹은 $$f:X \stackrel{\sim}{\longrightarrow} Y$$라 쓴다.
+
+## Examples 1
+
+- - -
+
+1. The category $$\mathtt{SETS}$$ of sets and maps.
+2. The category $$\mathtt{GRP}$$ of groups and group homomorphisms.
+3. The category $$\mathtt{AB}$$ of abelian groups and group homomorphisms.
+4. The category $$\mathtt{A-MOD}$$ of $$A$$-modules and $$A$$-linear maps where $$A$$ is a ring.
+5. The category $$\mathtt{TOP}$$ of topological spaces and continous maps.
+
+위 다섯 가지의 예는 모두 concrete category 중 자주 쓰이는 category이다. 5번 예처럼 category theory는 대수학에만 적용되는 개념이 아니라, 수학 전반에 걸쳐 쓰일 수 있다는 것을 알아야 한다.   
+
+한편, $$\mathtt{AB}$$와 $$\mathtt{GRP}$$의 경우, the set of objects와 the set of morphisms가 포함관계에 있음을 알 수 있다. 이러한 경우 $$\mathtt{AB}$$를 $$\mathtt{GRP}$$의 `subcategory`라 부른다. 특히 이 경우는 morphism sets은 아예 같은 것을 알 수 있는데, 이 땐 특별히 `full subcategory`라고 부른다. full에 관해서는 후에 좀 더 자세히 다루도록 하겠다.
+
+## Examples 2
+
+- - -
+
+이번에는 좀 더 다양하고 새로운 category를 소개하고자 한다.
+
+1. Category $$\mathcal{C}$$가 주어질 때마다 `opposite category` $$\mathcal{C}^{op}$$를 정의하고자 한다. 이름에서부터 알 수 있듯, 방향이 반대라는 뜻이다. 좀 더 자세히 말하자면 다음과 같다.:  
+
+   * object:   
+
+     $$Ob(\mathcal{C})=Ob(\mathcal{C}^{op})$$,
+   * morphism:   
+
+     $$Hom*{\mathcal{C}^{op}}(X,Y)=Hom*{\mathcal{C}}(Y,X)$$ 
+
+     for all $$X,Y\in\mathcal{C}^{op}$$.
+2. Category $$\mathcal{C}$$가 `discrete`이라고 하는 것은, 어떠한 object pair $$(X,Y)$$를 가지고 오더라도,
+
+   $$ 
+     Hom_{\mathcal{C}}(X,Y)=
+       \begin{cases}
+         {id_X} & \text{if } X=Y,\
+         \emptyset & \text{if } X\neq Y.
+       \end{cases}
+   $$
+
+   즉, identity morphism만 있는 상황인 것이다. 서로간의 연결 없이 뚝뚝 떨어져 있는 상황을 생각하면 그럴싸한 이름이다.
+3. Poset(Partially ordered set) $$(I,\leq)$$가 주어졌을 때, 이에 대응하는 category $$\mathtt{I}$$는 다음과 같이 줄 수 있다.:  
+
+   * object:
+
+     $$Ob(\mathtt{I})=I$$ 
+   * morphism:   
+
+     $$
+       Hom_{\mathtt{I}}(i,j)=
+         \begin{cases}
+           {\ast} & \text{if } i\leq j,\
+           \emptyset & \text{if } i\nleq j.
+         \end{cases}
+     $$
+
+   Topological space $$X$$가 하나 주어졌을 때, 주어진 topology 위에 set-inclusion 구조를 더하면 topology를 poset으로 볼 수 있음은 명확하다. 이 poset으로부터 얻는 category를 당분간 $$\mathtt{OPEN}_X$$라 쓴다.
+4. Category $$\mathcal{C}$$가 유한개의 morphism만을 가질 때 `finite`이라고 한다.
+   만약 category가 finite이라면, the set of objects도 finite이어야 한다. 왜냐하면 각 object는 항상 identity morphism을 갖기 때문이다.
+
+## 마무리
+
+- - -
+
+이번에는 category가 무엇인지, 어떤 것들이 있는지 간단히 살펴보았다. 아마도 category를 처음 보는 사람들은 이게 뭘 하는 것인가 싶을지도 모른다. 실제로 수학적인 성숙도가 부족하다면 앞으로 더욱 더 이해하기는 쉽지 않을 것으로 보인다. 하지만 advanced한 수준의 수학을 이해하기 위해서는 반드시 필요한 개념이기에, 미래의 나 포함 누군가는 볼 것 같아 이렇게 남겨둔다. 다음 포스팅에서는 category간의 함수 같은 `functor` (function 오타낸거 아니다.)라는 개념에 대해서 살펴보고자 한다.
