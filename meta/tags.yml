@@ -3,3 +3,5 @@ tags:
     name: Python
   - slug: data-science
     name: Data science
+  - name: Mathematics
+    slug: mathematics
