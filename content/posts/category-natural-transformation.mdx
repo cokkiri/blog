@@ -7,8 +7,6 @@ tags:
   - mathematics
   - category-theory
 ---
-
-
 * 목차
 
   * [시작하면서...](#시작하면서...)
@@ -30,10 +28,9 @@ tags:
 
 Category는 object와 morphism으로 이루어져 있다. Category는 정의상 각 object마다 identity morphism을 가지므로, 사실상 morphism만으로 이루어져 있다고 봐도 큰 무리는 아닌 것 같다. 이러한 측면에서 functor란 결국 두 카테고리의 구조적 동질성(composition을 해서 보내나 보내고 composition을 하나 같음)을 얘기하는 것이다. 그렇다면 functor 사이의 morphism, 즉 `natural transformation`은 어떤 정의를 이루어야 할까? 하나의 morphism을 두 개의 functor가 보냈을 때, 이 둘을 서로 잘 어울리도록 하는 무언가면 좋겠다. 이러한 관점에서 정의를 보면 그리 억지스럽지 않다.
 
-$$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 $$F$$와 $$G$$ 사이의 `morphism`(or `natural transformation`) $$\alpha:F\longrightarrow G$$는 아래의 조건을 만족시키는 $$\mathcal{D}$$의 morphism collection $${\alpha*X:::FX\longrightarrow GX}*{X\in\mathcal{C}}$$이다.:
+$$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 $$F$$와 $$G$$ 사이의 `morphism`(or `natural transformation`) $$\alpha:F\longrightarrow G$$는 아래의 조건을 만족시키는 $$\mathcal{D}$$의 morphism collection $$\{\alpha_X:::FX\longrightarrow GX\}_\{X\in\mathcal{C}\}$$이다.:
 
    임의의 morphism $$f:X\longrightarrow Y$$에 대하여 아래의 diagram이 commutative하다.
-   
 
 ![](/images/2021-05-28-math-intro-to-category-3-img1.png "img 1")
 
@@ -65,10 +62,10 @@ $$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 
 
     $$
       \begin{aligned}
-       f^{\vee\vee}(ev_v)(g) &= (ev_v\circ f^{\vee})(g) \
-                             &= ev_v(f^{\vee}(g)) \
-                             &= ev_v(g\circ f) \
-                             &= (g\circ f)(v) \
+       f^{\vee\vee}(ev_v)(g) &= (ev_v\circ f^{\vee})(g) \\
+                             &= ev_v(f^{\vee}(g)) \\
+                             &= ev_v(g\circ f) \\
+                             &= (g\circ f)(v) \\
                              &= g(f(v))
      \end{aligned}
     $$
@@ -92,8 +89,8 @@ $$F,G:\mathcal{C}\longrightarrow\mathcal{D}$$가 functors라고 하자. 이 때 
 
    $$
       \begin{aligned}
-        f(\det*A((k*{ij}))) &= f(\sum*{\sigma\in S_n}\text{sgn}(\sigma)\prod*{i=1}^n k*{\sigma(i)i}) \
-                            &= \sum*{\sigma\in S*n}\text{sgn}(\sigma)\prod*{i=1}^n f(k*{\sigma(i)i}) \
+        f(\det*A((k*{ij}))) &= f(\sum*{\sigma\in S_n}\text{sgn}(\sigma)\prod*{i=1}^n k*{\sigma(i)i}) \\
+                            &= \sum*{\sigma\in S*n}\text{sgn}(\sigma)\prod*{i=1}^n f(k*{\sigma(i)i}) \\
                             &= \det_B((f(k*{ij})))
       \end{aligned}
    $$
