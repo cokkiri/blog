@@ -79,7 +79,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     },
   });
 
-  console.log(mdxSource.compiledSource);
   return {
     props: {
       title: data.title,
