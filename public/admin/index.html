@@ -49,7 +49,7 @@
           renderer: renderer,
         });
 
-        content.innerHTML = marked(body);
+        content.innerHTML = marked.marked(body);
         renderMathInElement(content, {
           delimiters: [
             { left: '$$', right: '$$', display: true },
