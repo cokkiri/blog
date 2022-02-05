@@ -34,7 +34,7 @@
       render: function () {
         var entry = this.props.entry;
         var title = entry.getIn(["data", "title"]);
-        var body = this.props.widgetFor("body");
+        var body = entry.getIn(["data", "body"], '');
         var time = entry.getIn(["data", "date"]);
         var content = document.createElement("div");
 
