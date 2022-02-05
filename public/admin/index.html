@@ -1,33 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <!-- Include the script that builds the page and powers Netlify CMS -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-    <script>
-      CMS.registerPreviewStyle(
-        "https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap"
-      );
-      CMS.registerPreviewStyle("/styles/content.module.css");
-      var PostPreview = createClass({
-        render: function () {
-          var entry = this.props.entry;
-          var date = entry.getIn(["data", "date"]);
-          return h(
-            "div",
-            { className: "content" },
-            h("h1", {}, entry.getIn(["data", "title"])),
-            h("time", {}, entry.getIn(["data", "date"])),
-            h("div", {}, this.props.widgetFor("body"))
-          );
-        },
-      });
-      CMS.registerPreviewTemplate("posts", PostPreview);
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+
+<body>
+  <!-- Include the script that builds the page and powers Netlify CMS -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous">
     </script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"
+    integrity="sha256-GGbzkRkTtLnv3bOg61WAnkjYHxtsiVqu+tjMj6ssDVw=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+    crossorigin="anonymous"></script>
+  <script type="module">
+    import htm from 'https://unpkg.com/htm?module';
+    const html = htm.bind(h);
+
+    CMS.registerPreviewStyle(
+      "https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap"
+    );
+    CMS.registerPreviewStyle(
+      "https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    );
+    CMS.registerPreviewStyle("/styles/content.module.css");
+    var PostPreview = createClass({
+      render: function () {
+        var entry = this.props.entry;
+        var title = entry.getIn(["data", "title"]);
+        var body = this.props.widgetFor("body");
+        var time = entry.getIn(["data", "date"]);
+        var content = document.createElement("div");
+
+        const renderer = new marked.Renderer()
+        renderer.image = (href, title, text) => {
+          if (!href) return text;
+          const uri = this.props.getAsset(href).url;
+          return `<img src="${uri}" title="${title}" alt="${text}"/>`
+        }
+
+        marked.setOptions({
+          renderer: renderer,
+        });
+
+        content.innerHTML = marked(body);
+        renderMathInElement(content, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+          ],
+        });
+
+        return html`
+          <div class="content">
+            <h1>${title}</h1>
+            <time>${time}</time>
+            <div dangerouslySetInnerHTML=${{ _html: div.innerHTML }}></div>
+          </div>
+        `;
+      },
+    });
+    CMS.registerPreviewTemplate("posts", PostPreview);
+  </script>
+</body>
+
 </html>
